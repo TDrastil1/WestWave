@@ -1,0 +1,160 @@
+package com.westwave;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+
+import java.util.*;
+
+@SpringBootApplication
+public class WestWaveApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(WestWaveApplication.class, args);
+    }
+}
+
+// === Models ===
+@Entity
+class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String email;
+    private String username;
+    private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Pool> pools = new ArrayList<>();
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public List<Pool> getPools() { return pools; }
+    public void setPools(List<Pool> pools) { this.pools = pools; }
+}
+
+@Entity
+class Pool {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+}
+
+// === Repositories ===
+interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+}
+
+interface PoolRepository extends JpaRepository<Pool, Long> {
+    List<Pool> findByUserId(Long userId);
+}
+
+// === Services ===
+@Service
+class UserService {
+    @Autowired private UserRepository userRepository;
+
+    public User registerUser(String email, String username, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setPassword(password);
+        return userRepository.save(user);
+    }
+
+    public Optional<User> loginUser(String email, String password) {
+        return userRepository.findByEmail(email)
+                .filter(user -> user.getPassword().equals(password));
+    }
+}
+
+@Service
+class PoolService {
+    @Autowired private PoolRepository poolRepository;
+    @Autowired private UserRepository userRepository;
+
+    public Pool createPool(String name, Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) throw new RuntimeException("User not found");
+
+        Pool pool = new Pool();
+        pool.setName(name);
+        pool.setUser(user.get());
+        return poolRepository.save(pool);
+    }
+
+    public List<Pool> getUserPools(Long userId) {
+        return poolRepository.findByUserId(userId);
+    }
+}
+
+// === Controllers ===
+@RestController
+@RequestMapping("/api/auth")
+class AuthController {
+    @Autowired private UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String username = body.get("username");
+        String password = body.get("password");
+        User user = userService.registerUser(email, username, password);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String password = body.get("password");
+        Optional<User> user = userService.loginUser(email, password);
+        return user.map(u -> ResponseEntity.ok("Welcome " + u.getUsername()))
+                .orElse(ResponseEntity.status(401).body("Invalid credentials"));
+    }
+}
+
+@RestController
+@RequestMapping("/api/pools")
+class PoolController {
+    @Autowired private PoolService poolService;
+
+    @PostMapping("/create")
+    public ResponseEntity<Pool> createPool(@RequestBody Map<String, Object> body) {
+        String name = (String) body.get("name");
+        Long userId = Long.valueOf((Integer) body.get("userId"));
+        Pool pool = poolService.createPool(name, userId);
+        return ResponseEntity.ok(pool);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Pool>> getUserPools(@PathVariable Long userId) {
+        List<Pool> pools = poolService.getUserPools(userId);
+        return ResponseEntity.ok(pools);
+    }
+}
