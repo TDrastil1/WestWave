@@ -4,18 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WestWave</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to WestWave</h1>
-        <form id="registerForm">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Register</button>
-        </form>
+        <header>
+            <h1>WestWave</h1>
+            <p>Socialize your way - Join a pool or create your own!</p>
+        </header>
+        <section class="auth-section">
+            <form id="registerForm">
+                <h2>Register</h2>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <form id="loginForm">
+                <h2>Login</h2>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="dashboard" style="display: none;">
+            <h2>Welcome, <span id="userDisplayName"></span></h2>
+            <div class="pools-section">
+                <h3>Your Pools</h3>
+                <ul id="userPoolsList"></ul>
+                <form id="createPoolForm">
+                    <h4>Create a Pool</h4>
+                    <input type="text" id="poolName" placeholder="Pool Name" required>
+                    <button type="submit">Create Pool</button>
+                </form>
+            </div>
+        </section>
     </div>
-    <script src="/js/app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
