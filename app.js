@@ -7,6 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const users = {}; // To store user data locally (in-memory simulation)
     const pools = {}; // To store pools created by users
 
+    // Switch between forms
+    const registerForm = document.getElementById("registerForm");
+    const loginForm = document.getElementById("loginForm");
+
+    document.getElementById("switchToLogin").addEventListener("click", () => {
+        registerForm.classList.remove("active-form");
+        loginForm.classList.add("active-form");
+    });
+
+    document.getElementById("switchToRegister").addEventListener("click", () => {
+        loginForm.classList.remove("active-form");
+        registerForm.classList.add("active-form");
+    });
+
     // Switch from authentication to dashboard
     function switchToDashboard(username) {
         authSection.style.display = "none";
@@ -28,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Handle user registration
-    document.getElementById("registerForm").addEventListener("submit", (e) => {
+    registerForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const username = document.getElementById("username").value.trim();
         const email = document.getElementById("email").value.trim();
@@ -45,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Handle user login
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
+    loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const email = document.getElementById("loginEmail").value.trim();
         const password = document.getElementById("loginPassword").value.trim();
@@ -58,4 +72,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Handle pool creation
-    document.getElementById("createPoolForm").addEventListener
+    document.getElementById("createPoolForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const poolName = document.getElementById("poolName").value.trim();
+        const username = displayName.textContent;
+
+        if (!pools[username]) {
+            pools[username] = [];
+        }
+
+        pools[username].push(poolName); // Add the new pool
+        loadPools(username); // Refresh the pools list
+        alert(`Pool "${poolName}" created successfully!`);
+    });
+});
