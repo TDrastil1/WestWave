@@ -4,16 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const displayName = document.getElementById("displayName");
     const poolsList = document.getElementById("poolsList");
 
-    const users = {};
-    const pools = {};
+    const users = {}; // To store user data locally (in-memory simulation)
+    const pools = {}; // To store pools created by users
 
+    // Switch from authentication to dashboard
     function switchToDashboard(username) {
         authSection.style.display = "none";
         dashboardSection.style.display = "block";
-        displayName.textContent = username;
-        loadPools(username);
+        displayName.textContent = username; // Show the logged-in user's name
+        loadPools(username); // Load pools for the logged-in user
     }
 
+    // Load pools for the logged-in user
     function loadPools(username) {
         poolsList.innerHTML = "";
         if (pools[username]) {
@@ -25,8 +27,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Handle user registration
     document.getElementById("registerForm").addEventListener("submit", (e) => {
         e.preventDefault();
         const username = document.getElementById("username").value.trim();
         const email = document.getElementById("email").value.trim();
-        const password = document.getElementBy
+        const password = document.getElementById("password").value.trim();
+
+        if (!users[email]) {
+            // Store user data
+            users[email] = { username, password, pools: [] };
+            alert("Registration successful!");
+            switchToDashboard(username); // Automatically log in after registration
+        } else {
+            alert("User already exists. Please log in.");
+        }
+    });
+
+    // Handle user login
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (users[email] && users[email].password === password) {
+            switchToDashboard(users[email].username);
+        } else {
+            alert("Invalid email or password.");
+        }
+    });
+
+    // Handle pool creation
+    document.getElementById("createPoolForm").addEventListener
