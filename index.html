@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave - Social Platform</title>
+    <title>WestWave - Login/Register</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,15 +15,16 @@
     <main>
         <!-- Authentication Section -->
         <section id="auth-section">
-            <div class="auth-forms">
+            <div class="auth-container">
                 <form id="registerForm" class="form active-form">
                     <h2>Register</h2>
                     <input type="text" id="username" placeholder="Username" required>
                     <input type="email" id="email" placeholder="Email" required>
                     <input type="password" id="password" placeholder="Password" required>
                     <button type="submit">Register</button>
-                    <p class="switch-form">
-                        Already have an account? <button type="button" id="switchToLogin">Log In</button>
+                    <p>
+                        Already have an account? 
+                        <button type="button" id="switchToLogin" class="inline-button">Log In</button>
                     </p>
                 </form>
 
@@ -31,23 +32,11 @@
                     <h2>Login</h2>
                     <input type="email" id="loginEmail" placeholder="Email" required>
                     <input type="password" id="loginPassword" placeholder="Password" required>
-                    <button type="submit">Login</button>
-                    <p class="switch-form">
-                        Don't have an account? <button type="button" id="switchToRegister">Register</button>
+                    <button type="submit">Log In</button>
+                    <p>
+                        Don't have an account? 
+                        <button type="button" id="switchToRegister" class="inline-button">Register</button>
                     </p>
-                </form>
-            </div>
-        </section>
-
-        <!-- Dashboard Section -->
-        <section id="dashboard-section" style="display: none;">
-            <h2>Welcome, <span id="displayName"></span>!</h2>
-            <div class="pools">
-                <h3>Your Pools</h3>
-                <ul id="poolsList"></ul>
-                <form id="createPoolForm" class="form">
-                    <input type="text" id="poolName" placeholder="New Pool Name" required>
-                    <button type="submit">Create Pool</button>
                 </form>
             </div>
         </section>
