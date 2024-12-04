@@ -1,80 +1,32 @@
-const apiUrl = "http://localhost:8080/api";
+document.addEventListener("DOMContentLoaded", () => {
+    const authSection = document.getElementById("auth-section");
+    const dashboardSection = document.getElementById("dashboard-section");
+    const displayName = document.getElementById("displayName");
+    const poolsList = document.getElementById("poolsList");
 
-document.getElementById("registerForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const users = {};
+    const pools = {};
 
-    const response = await fetch(`${apiUrl}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
-    });
-
-    if (response.ok) {
-        alert("Registration successful! Please log in.");
-    } else {
-        alert("Registration failed. Please try again.");
+    function switchToDashboard(username) {
+        authSection.style.display = "none";
+        dashboardSection.style.display = "block";
+        displayName.textContent = username;
+        loadPools(username);
     }
-});
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    const response = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("userId", data.userId);
-        document.getElementById("userDisplayName").textContent = data.username;
-        loadUserPools(data.userId);
-        toggleDashboard(true);
-    } else {
-        alert("Login failed. Please check your credentials.");
+    function loadPools(username) {
+        poolsList.innerHTML = "";
+        if (pools[username]) {
+            pools[username].forEach(pool => {
+                const li = document.createElement("li");
+                li.textContent = pool;
+                poolsList.appendChild(li);
+            });
+        }
     }
-});
 
-document.getElementById("createPoolForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const poolName = document.getElementById("poolName").value;
-    const userId = localStorage.getItem("userId");
-
-    const response = await fetch(`${apiUrl}/pools/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: poolName, userId }),
-    });
-
-    if (response.ok) {
-        const pool = await response.json();
-        addPoolToList(pool.name);
-    } else {
-        alert("Failed to create pool. Try again.");
-    }
-});
-
-async function loadUserPools(userId) {
-    const response = await fetch(`${apiUrl}/pools/user/${userId}`);
-    const pools = await response.json();
-    const list = document.getElementById("userPoolsList");
-    list.innerHTML = "";
-    pools.forEach((pool) => addPoolToList(pool.name));
-}
-
-function addPoolToList(name) {
-    const list = document.getElementById("userPoolsList");
-    const li = document.createElement("li");
-    li.textContent = name;
-    list.appendChild(li);
-}
-
-function toggleDashboard(show) {
-    document.getElementById("dashboard").style.display = show ? "block" : "none";
-}
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementBy
