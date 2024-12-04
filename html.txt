@@ -3,43 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave</title>
+    <title>WestWave - Social Platform</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>WestWave</h1>
-            <p>Socialize your way - Join a pool or create your own!</p>
-        </header>
-        <section class="auth-section">
-            <form id="registerForm">
-                <h2>Register</h2>
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button type="submit">Register</button>
-            </form>
-            <form id="loginForm">
-                <h2>Login</h2>
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
+    <header class="site-header">
+        <h1>WestWave</h1>
+        <p>Connect, Share, and Join Pools!</p>
+    </header>
+
+    <main>
+        <section id="auth-section">
+            <div class="auth-forms">
+                <form id="registerForm" class="form">
+                    <h2>Register</h2>
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+
+                <form id="loginForm" class="form">
+                    <h2>Login</h2>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
         </section>
-        <section id="dashboard" style="display: none;">
-            <h2>Welcome, <span id="userDisplayName"></span></h2>
-            <div class="pools-section">
+
+        <section id="dashboard-section" style="display: none;">
+            <h2>Welcome, <span id="displayName"></span>!</h2>
+            <div class="pools">
                 <h3>Your Pools</h3>
-                <ul id="userPoolsList"></ul>
-                <form id="createPoolForm">
-                    <h4>Create a Pool</h4>
-                    <input type="text" id="poolName" placeholder="Pool Name" required>
+                <ul id="poolsList"></ul>
+                <form id="createPoolForm" class="form">
+                    <input type="text" id="poolName" placeholder="New Pool Name" required>
                     <button type="submit">Create Pool</button>
                 </form>
             </div>
         </section>
-    </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 WestWave. All rights reserved.</p>
+    </footer>
+
     <script src="app.js"></script>
 </body>
 </html>
