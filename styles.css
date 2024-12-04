@@ -1,15 +1,18 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 header.site-header {
-    background-color: #007BFF;
-    color: white;
     text-align: center;
-    padding: 20px 0;
+    padding: 20px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    color: #fff;
 }
 
 header h1 {
@@ -21,63 +24,73 @@ header p {
     margin: 5px 0 0;
 }
 
-main {
-    max-width: 800px;
-    margin: 20px auto;
+/* Forms */
+.auth-forms {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
     padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    margin-bottom: 20px;
-    color: #333;
 }
 
 .form {
-    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-input {
+.form h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.form input {
     display: block;
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px;
+.form button {
     width: 100%;
+    padding: 10px;
+    border: none;
     border-radius: 5px;
+    background: #4facfe;
+    color: white;
+    font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
+.form button:hover {
+    background: #00c3fe;
 }
 
-ul {
-    list-style: none;
+/* Dashboard */
+#dashboard-section {
+    padding: 20px;
+    text-align: center;
+}
+
+.pools ul {
+    list-style-type: none;
     padding: 0;
 }
 
-ul li {
-    background: #f4f4f4;
-    margin: 10px 0;
+.pools ul li {
+    background: #e7f0fe;
+    margin: 5px 0;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ddd;
 }
 
 footer {
     text-align: center;
-    margin: 20px 0;
-    color: #555;
-    font-size: 0.9rem;
+    padding: 10px;
+    background: #4facfe;
+    color: white;
 }
