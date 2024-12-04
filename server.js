@@ -1,40 +1,17 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const path = require("path");
 
 const app = express();
-const PORT = 3000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// Serve static files
+app.use(express.static(path.join(__dirname, "/")));
 
-// In-memory data storage
-let posts = [
-    { username: "User1", content: "Hello, WestWave!" },
-    { username: "User2", content: "Just joined this cool platform!" },
-];
+// Routes
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+app.get("/home", (req, res) => res.sendFile(path.join(__dirname, "home.html")));
 
-// Serve the frontend
-app.use(express.static("public"));
-
-// API routes
-app.get("/api/posts", (req, res) => {
-    res.json(posts);
-});
-
-app.post("/api/posts", (req, res) => {
-    const { content } = req.body;
-    if (content) {
-        const newPost = { username: "Anonymous", content };
-        posts.push(newPost);
-        res.status(201).json(newPost);
-    } else {
-        res.status(400).json({ error: "Content is required" });
-    }
-});
-
-// Start the server
+// Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
 });
