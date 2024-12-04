@@ -3,62 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave Home</title>
+    <title>Home | WestWave</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Left Sidebar -->
-        <aside class="sidebar">
-            <h2>Channels</h2>
-            <ul class="channel-list">
-                <li># General</li>
-                <li># Book Club</li>
-                <li># Music Fans</li>
-                <li># Sports Talk</li>
-                <li><button id="addChannel">+ Add Channel</button></li>
-            </ul>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Stories -->
-            <section class="stories">
-                <h2>Stories</h2>
-                <div class="stories-container">
-                    <div class="story">Story 1</div>
-                    <div class="story">Story 2</div>
-                    <div class="story">Story 3</div>
-                    <div class="story">Story 4</div>
-                </div>
-            </section>
-
-            <!-- Posts Feed -->
-            <section class="posts">
-                <h2>Feed</h2>
-                <div class="post">
-                    <h3>@User1</h3>
-                    <p>This is a sample post content!</p>
-                </div>
-                <div class="post">
-                    <h3>@User2</h3>
-                    <p>Another cool post from a friend.</p>
-                </div>
-            </section>
-        </main>
-
-        <!-- Right Sidebar -->
-        <aside class="sidebar">
-            <h2>Online Friends</h2>
-            <ul class="friend-list">
-                <li>User1</li>
-                <li>User2</li>
-                <li>User3</li>
-                <li>User4</li>
-            </ul>
-        </aside>
-    </div>
-
-    <script src="app.js"></script>
+    <header>
+        <h1>WestWave</h1>
+        <button onclick="logout()">Log Out</button>
+    </header>
+    <main>
+        <section class="posts">
+            <h2>Your Feed</h2>
+            <div id="postContainer">
+                <!-- Posts will be dynamically loaded here -->
+            </div>
+        </section>
+        <section class="chat">
+            <h2>Chats</h2>
+            <div id="chatContainer">
+                <!-- Chat features will go here -->
+            </div>
+        </section>
+    </main>
+    <script src="home.js"></script>
 </body>
 </html>
