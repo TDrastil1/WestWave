@@ -3,49 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave - Login/Register</title>
+    <title>Register - WestWave</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <header class="site-header">
-        <h1>WestWave</h1>
-        <p>Connect, Share, and Join Pools!</p>
-    </header>
+<body class="register-page">
+    <div class="register-container">
+        <h1>Join WestWave</h1>
+        <p>Your all-in-one social platform to connect, share, and explore.</p>
 
-    <main>
-        <!-- Authentication Section -->
-        <section id="auth-section">
-            <div class="auth-container">
-                <form id="registerForm" class="form active-form">
-                    <h2>Register</h2>
-                    <input type="text" id="username" placeholder="Username" required>
-                    <input type="email" id="email" placeholder="Email" required>
-                    <input type="password" id="password" placeholder="Password" required>
-                    <button type="submit">Register</button>
-                    <p>
-                        Already have an account? 
-                        <button type="button" id="switchToLogin" class="inline-button">Log In</button>
-                    </p>
-                </form>
+        <form id="registerForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username" required>
 
-                <form id="loginForm" class="form">
-                    <h2>Login</h2>
-                    <input type="email" id="loginEmail" placeholder="Email" required>
-                    <input type="password" id="loginPassword" placeholder="Password" required>
-                    <button type="submit">Log In</button>
-                    <p>
-                        Don't have an account? 
-                        <button type="button" id="switchToRegister" class="inline-button">Register</button>
-                    </p>
-                </form>
-            </div>
-        </section>
-    </main>
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
 
-    <footer>
-        <p>&copy; 2024 WestWave. All rights reserved.</p>
-    </footer>
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter a secure password" required>
 
-    <script src="app.js"></script>
+            <button type="submit" class="btn">Register</button>
+        </form>
+
+        <div class="switch-auth">
+            <p>Already have an account?</p>
+            <button onclick="redirectToLogin()" class="btn-secondary">Log In</button>
+        </div>
+    </div>
+
+    <script>
+        function redirectToLogin() {
+            window.location.href = "home.html";
+        }
+
+        // Handle form submission
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Simulate registration process
+            alert(`Thank you for registering, ${username}! Redirecting to the home page...`);
+            window.location.href = "home.html"; // Redirect to home page
+        });
+    </script>
 </body>
 </html>
