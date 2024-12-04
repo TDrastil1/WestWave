@@ -3,86 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave - Home</title>
+    <title>WestWave Home</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="site-header">
-        <h1>WestWave</h1>
-        <nav>
-            <button id="logoutButton">Log Out</button>
-        </nav>
-    </header>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <h2>Channels</h2>
+            <ul class="channel-list">
+                <li># General</li>
+                <li># Book Club</li>
+                <li># Music Fans</li>
+                <li># Sports Talk</li>
+                <li><button id="addChannel">+ Add Channel</button></li>
+            </ul>
+        </aside>
 
-    <main>
-        <section id="feed">
-            <h2>Your Feed</h2>
-            <div id="posts">
-                <p>No posts yet. Create or join a pool to see activity!</p>
-            </div>
-        </section>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Stories -->
+            <section class="stories">
+                <h2>Stories</h2>
+                <div class="stories-container">
+                    <div class="story">Story 1</div>
+                    <div class="story">Story 2</div>
+                    <div class="story">Story 3</div>
+                    <div class="story">Story 4</div>
+                </div>
+            </section>
 
-        <section id="stories">
-            <h2>Stories</h2>
-            <div id="storyList">
-                <p>No stories yet. Add some to share with friends!</p>
-            </div>
-        </section>
-    </main>
+            <!-- Posts Feed -->
+            <section class="posts">
+                <h2>Feed</h2>
+                <div class="post">
+                    <h3>@User1</h3>
+                    <p>This is a sample post content!</p>
+                </div>
+                <div class="post">
+                    <h3>@User2</h3>
+                    <p>Another cool post from a friend.</p>
+                </div>
+            </section>
+        </main>
 
-    <footer>
-        <p>&copy; 2024 WestWave. All rights reserved.</p>
-    </footer>
+        <!-- Right Sidebar -->
+        <aside class="sidebar">
+            <h2>Online Friends</h2>
+            <ul class="friend-list">
+                <li>User1</li>
+                <li>User2</li>
+                <li>User3</li>
+                <li>User4</li>
+            </ul>
+        </aside>
+    </div>
 
-    <script>
-        // Simple logout functionality
-        document.getElementById('logoutButton').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave - Home</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <h1>WestWave</h1>
-        <nav>
-            <button id="logoutButton">Log Out</button>
-        </nav>
-    </header>
-
-    <main>
-        <section id="feed">
-            <h2>Your Feed</h2>
-            <div id="posts">
-                <p>No posts yet. Create or join a pool to see activity!</p>
-            </div>
-        </section>
-
-        <section id="stories">
-            <h2>Stories</h2>
-            <div id="storyList">
-                <p>No stories yet. Add some to share with friends!</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 WestWave. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Simple logout functionality
-        document.getElementById('logoutButton').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
