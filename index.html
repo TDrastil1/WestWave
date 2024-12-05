@@ -3,32 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | WestWave</title>
+    <title>WestWave - Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="auth-container">
+    <div class="login-container">
         <h1>Welcome to WestWave</h1>
-        <p>Your all-in-one social platform.</p>
-        
-        <form id="registerForm">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <p>Your all-in-one social platform to connect, share, and explore.</p>
 
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter a password" required>
-
-            <button type="submit" class="btn">Register</button>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter a secure password" required>
+            </div>
+            <button type="submit">Log In</button>
         </form>
-
-        <div class="switch-auth">
-            <p>Already have an account?</p>
-            <button class="btn-secondary" onclick="location.href='home.html';">Log In</button>
-        </div>
+        <p>New to WestWave? <a href="#" id="registerLink">Register Here</a></p>
     </div>
-    <script src="app.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>
