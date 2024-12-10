@@ -1,95 +1,161 @@
-const express = require("express");
-const path = require("path");
-const http = require("http");
-const mongoose = require("mongoose");
-const socketIO = require("socket.io");
+document.addEventListener("DOMContentLoaded", () => {
+    const socket = io();
 
-const app = express();
-const server = http.createServer(app);
-const io = socketIO(server);
+    // Navigation between pages
+    const registerPage = document.getElementById("registerPage");
+    const loginPage = document.getElementById("loginPage");
+    const homePage = document.getElementById("homePage");
 
-// Middleware
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+    const goToLogin = document.getElementById("goToLogin");
+    const goToRegister = document.getElementById("goToRegister");
+    const logoutButton = document.getElementById("logoutButton");
 
-// MongoDB Setup
-mongoose.connect("mongodb://localhost:27017/westwave", { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("MongoDB connected"))
-    .catch(err => console.error(err));
+    const registerButton = document.getElementById("registerButton");
+    const loginButton = document.getElementById("loginButton");
 
-// MongoDB Models
-const User = mongoose.model("User", { username: String, email: String, password: String });
-const Story = mongoose.model("Story", { username: String, content: String, timestamp: Date });
-const Message = mongoose.model("Message", { pool: String, username: String, text: String, timestamp: Date });
-const Post = mongoose.model("Post", { username: String, content: String, timestamp: Date });
-
-// Routes
-app.post("/register", async (req, res) => {
-    const { username, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).send("Email already registered.");
-    const user = new User({ username, email, password });
-    await user.save();
-    res.status(201).send("User registered successfully!");
-});
-
-app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email, password });
-    if (user) res.status(200).send(user.username);
-    else res.status(400).send("Invalid credentials.");
-});
-
-app.post("/story", async (req, res) => {
-    const { username, content } = req.body;
-    const story = new Story({ username, content, timestamp: new Date() });
-    await story.save();
-    res.status(201).send("Story added.");
-});
-
-app.get("/stories", async (req, res) => {
-    const stories = await Story.find({ timestamp: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) } });
-    res.json(stories);
-});
-
-app.post("/post", async (req, res) => {
-    const { username, content } = req.body;
-    const post = new Post({ username, content, timestamp: new Date() });
-    await post.save();
-    res.status(201).send("Post added.");
-});
-
-app.get("/feed", async (req, res) => {
-    const posts = await Post.find({}).sort({ timestamp: -1 });
-    res.json(posts);
-});
-
-app.get("/messages", async (req, res) => {
-    const { pool } = req.query;
-    const messages = await Message.find({ pool }).sort({ timestamp: 1 });
-    res.json(messages);
-});
-
-// Real-Time Chat
-io.on("connection", (socket) => {
-    console.log("A user connected");
-
-    socket.on("joinPool", (pool) => {
-        socket.join(pool);
-        console.log(`User joined pool: ${pool}`);
+    goToLogin.addEventListener("click", () => {
+        registerPage.classList.add("hidden");
+        loginPage.classList.remove("hidden");
     });
 
-    socket.on("sendMessage", async ({ pool, username, text }) => {
-        const message = new Message({ pool, username, text, timestamp: new Date() });
-        await message.save();
-        io.to(pool).emit("receiveMessage", message);
+    goToRegister.addEventListener("click", () => {
+        loginPage.classList.add("hidden");
+        registerPage.classList.remove("hidden");
     });
 
-    socket.on("disconnect", () => {
-        console.log("User disconnected");
+    logoutButton.addEventListener("click", () => {
+        homePage.classList.add("hidden");
+        loginPage.classList.remove("hidden");
+        localStorage.removeItem("username");
     });
+
+    // Register
+    registerButton.addEventListener("click", async () => {
+        const username = document.getElementById("registerUsername").value.trim();
+        const email = document.getElementById("registerEmail").value.trim();
+        const password = document.getElementById("registerPassword").value.trim();
+
+        if (username && email && password) {
+            const response = await fetch("/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password }),
+            });
+
+            if (response.ok) {
+                alert("Registration successful!");
+                registerPage.classList.add("hidden");
+                loginPage.classList.remove("hidden");
+            } else {
+                alert("Error: Registration failed.");
+            }
+        }
+    });
+
+    // Login
+    loginButton.addEventListener("click", async () => {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (email && password) {
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (response.ok) {
+                const username = await response.text();
+                localStorage.setItem("username", username);
+                loginPage.classList.add("hidden");
+                homePage.classList.remove("hidden");
+                loadStories();
+                loadFeed();
+            } else {
+                alert("Error: Login failed.");
+            }
+        }
+    });
+
+    // Stories
+    const storyInput = document.getElementById("storyInput");
+    const addStoryButton = document.getElementById("addStory");
+    const storyList = document.getElementById("storyList");
+
+    addStoryButton.addEventListener("click", async () => {
+        const content = storyInput.value.trim();
+        if (content) {
+            await fetch("/story", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: localStorage.getItem("username"), content }),
+            });
+            storyInput.value = "";
+            loadStories();
+        }
+    });
+
+    async function loadStories() {
+        const response = await fetch("/stories");
+        const stories = await response.json();
+        storyList.innerHTML = stories.map(s => `<div>${s.username}: ${s.content}</div>`).join("");
+    }
+
+    // Feed
+    const postInput = document.getElementById("postInput");
+    const addPostButton = document.getElementById("addPost");
+    const postList = document.getElementById("postList");
+
+    addPostButton.addEventListener("click", async () => {
+        const content = postInput.value.trim();
+        if (content) {
+            await fetch("/post", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: localStorage.getItem("username"), content }),
+            });
+            postInput.value = "";
+            loadFeed();
+        }
+    });
+
+    async function loadFeed() {
+        const response = await fetch("/feed");
+        const posts = await response.json();
+        postList.innerHTML = posts.map(p => `<div>${p.username}: ${p.content}</div>`).join("");
+    }
+
+    // Chat
+    const chatInput = document.getElementById("chatInput");
+    const sendMessageButton = document.getElementById("sendMessage");
+    const chatMessages = document.getElementById("chatMessages");
+    const pools = document.getElementById("pools");
+
+    let currentPool = "General";
+
+    pools.addEventListener("click", (e) => {
+        if (e.target.tagName === "LI") {
+            currentPool = e.target.dataset.pool;
+            socket.emit("joinPool", currentPool);
+            loadMessages();
+        }
+    });
+
+    sendMessageButton.addEventListener("click", () => {
+        const text = chatInput.value.trim();
+        if (text) {
+            socket.emit("sendMessage", { pool: currentPool, username: localStorage.getItem("username"), text });
+            chatInput.value = "";
+        }
+    });
+
+    socket.on("receiveMessage", (message) => {
+        chatMessages.innerHTML += `<div>${message.username}: ${message.text}</div>`;
+    });
+
+    async function loadMessages() {
+        const response = await fetch(`/messages?pool=${currentPool}`);
+        const messages = await response.json();
+        chatMessages.innerHTML = messages.map(m => `<div>${m.username}: ${m.text}</div>`).join("");
+    }
 });
-
-// Start Server
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
