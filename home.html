@@ -7,27 +7,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <div class="navbar">
-        <h1>WestWave</h1>
-        <div class="nav-links">
-            <a href="#" class="nav-item">Home</a>
-            <a href="#" class="nav-item">Explore</a>
-            <a href="#" class="nav-item">Chats</a>
-            <button id="logoutButton" class="nav-item">Log Out</button>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Sidebar -->
+    <div class="main-page">
+        <!-- Sidebar (Pools) -->
         <div class="sidebar">
-            <h2>Your Groups</h2>
-            <ul class="group-list">
-                <li class="group-item">Book Club</li>
-                <li class="group-item">Gaming Buddies</li>
-                <li class="group-item">Music Lovers</li>
+            <h2>Pools</h2>
+            <ul id="poolsList" class="pools-list">
+                <li class="pool-item">General</li>
+                <li class="pool-item">Gaming</li>
+                <li class="pool-item">Music</li>
             </ul>
+            <button id="addPoolButton">+ Add Pool</button>
         </div>
 
         <!-- Feed Section -->
@@ -44,11 +33,11 @@
                 <h2>Feed</h2>
                 <div class="post">
                     <h3>User 1</h3>
-                    <p>This is a post by User 1.</p>
+                    <p>Exploring WestWave!</p>
                 </div>
                 <div class="post">
                     <h3>User 2</h3>
-                    <p>This is an update by User 2.</p>
+                    <p>Welcome to my pool!</p>
                 </div>
             </section>
         </div>
@@ -57,16 +46,12 @@
         <div class="chat">
             <h2>Chat</h2>
             <div class="chat-container">
-                <div class="chat-message"><strong>User1:</strong> Hello!</div>
-                <div class="chat-message"><strong>User2:</strong> Hi there!</div>
+                <div class="chat-message"><strong>User1:</strong> Hi there!</div>
+                <div class="chat-message"><strong>User2:</strong> Hello!</div>
             </div>
             <input type="text" placeholder="Type a message..." class="chat-input">
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 WestWave | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
-    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
