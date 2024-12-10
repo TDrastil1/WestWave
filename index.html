@@ -7,26 +7,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="login-container">
-        <h1>Welcome to WestWave</h1>
-        <p>Your all-in-one social platform to connect, share, and explore.</p>
+    <div class="auth-container">
+        <div class="auth-form">
+            <h1>Welcome to WestWave</h1>
+            <p>Your social platform for connecting, sharing, and exploring pools.</p>
 
-        <form id="authForm">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter your username" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit">Log In</button>
-        </form>
-        <p>New to WestWave? <a href="#" id="switchToRegister">Register Here</a></p>
+            <!-- Login Form -->
+            <form id="loginForm" class="form active">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Log In</button>
+                <p>Don't have an account? <a href="#" id="switchToRegister">Register</a></p>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="registerForm" class="form">
+                <h2>Register</h2>
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create a secure password" required>
+                </div>
+                <button type="submit">Register</button>
+                <p>Already have an account? <a href="#" id="switchToLogin">Log In</a></p>
+            </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
