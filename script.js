@@ -1,17 +1,27 @@
-const express = require("express");
-const path = require("path");
+document.getElementById("authForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
 
-const app = express();
+    if (username && email) {
+        alert(`Welcome, ${username}!`);
+        window.location.href = "home.html";
+    } else {
+        alert("Please fill out all fields.");
+    }
+});
 
-// Serve static files
-app.use(express.static(path.join(__dirname, "/")));
-
-// Routes
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
-app.get("/home", (req, res) => res.sendFile(path.join(__dirname, "home.html")));
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+// Chat interaction
+document.querySelector('.chat-input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        const message = e.target.value.trim();
+        if (message) {
+            const chatContainer = document.querySelector('.chat-container');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('chat-message');
+            newMessage.innerHTML = `<strong>You:</strong> ${message}`;
+            chatContainer.appendChild(newMessage);
+            e.target.value = '';
+        }
+    }
 });
