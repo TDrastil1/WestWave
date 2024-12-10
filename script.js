@@ -1,65 +1,76 @@
-// Form toggle functionality
-document.getElementById("switchToRegister").addEventListener("click", function () {
-    document.getElementById("loginForm").classList.remove("active");
-    document.getElementById("registerForm").classList.add("active");
+const express = require("express");
+const path = require("path");
+const http = require("http");
+const mongoose = require("mongoose");
+const socketIO = require("socket.io");
+
+// App setup
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
+
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+
+// MongoDB Setup
+mongoose.connect("mongodb://localhost:27017/westwave", { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.log(err));
+
+// MongoDB Models
+const User = mongoose.model("User", { username: String, email: String, password: String });
+const Story = mongoose.model("Story", { username: String, content: String, timestamp: Date });
+const Message = mongoose.model("Message", { pool: String, username: String, text: String, timestamp: Date });
+
+// Routes
+app.post("/register", async (req, res) => {
+    const { username, email, password } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).send("Email already registered.");
+    const user = new User({ username, email, password });
+    await user.save();
+    res.status(201).send("User registered successfully!");
 });
 
-document.getElementById("switchToLogin").addEventListener("click", function () {
-    document.getElementById("registerForm").classList.remove("active");
-    document.getElementById("loginForm").classList.add("active");
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email, password });
+    if (user) res.status(200).send("Login successful.");
+    else res.status(400).send("Invalid credentials.");
 });
 
-// Login and Register functionality
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    if (email && password) {
-        alert("Login successful!");
-        window.location.href = "home.html";
-    } else {
-        alert("Please fill out all fields.");
-    }
+app.get("/stories", async (req, res) => {
+    const stories = await Story.find({ timestamp: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) } });
+    res.json(stories);
 });
 
-document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const username = document.getElementById("registerUsername").value;
-    const email = document.getElementById("registerEmail").value;
-    const password = document.getElementById("registerPassword").value;
-
-    if (username && email && password) {
-        alert("Registration successful! Please log in.");
-        document.getElementById("switchToLogin").click();
-    } else {
-        alert("Please complete all fields.");
-    }
+app.get("/messages", async (req, res) => {
+    const { pool } = req.query;
+    const messages = await Message.find({ pool }).sort({ timestamp: 1 });
+    res.json(messages);
 });
 
-// Chat functionality
-document.querySelector('.chat-input').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        const message = e.target.value.trim();
-        if (message) {
-            const chatContainer = document.querySelector('.chat-container');
-            const newMessage = document.createElement('div');
-            newMessage.classList.add('chat-message');
-            newMessage.innerHTML = `<strong>You:</strong> ${message}`;
-            chatContainer.appendChild(newMessage);
-            e.target.value = '';
-        }
-    }
+// Real-Time Chat
+io.on("connection", (socket) => {
+    console.log("A user connected");
+
+    socket.on("joinPool", (pool) => {
+        socket.join(pool);
+        console.log(`User joined pool: ${pool}`);
+    });
+
+    socket.on("sendMessage", async ({ pool, username, text }) => {
+        const message = new Message({ pool, username, text, timestamp: new Date() });
+        await message.save();
+        io.to(pool).emit("receiveMessage", message);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected");
+    });
 });
 
-// Pools functionality
-document.getElementById("addPoolButton").addEventListener("click", function () {
-    const newPool = prompt("Enter the name of the new pool:");
-    if (newPool) {
-        const poolsList = document.getElementById("poolsList");
-        const newPoolItem = document.createElement("li");
-        newPoolItem.className = "pool-item";
-        newPoolItem.textContent = newPool;
-        poolsList.appendChild(newPoolItem);
-    }
-});
+// Start Server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
