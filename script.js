@@ -4,7 +4,6 @@ const http = require("http");
 const mongoose = require("mongoose");
 const socketIO = require("socket.io");
 
-// App setup
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -16,12 +15,13 @@ app.use(express.static(path.join(__dirname, "public")));
 // MongoDB Setup
 mongoose.connect("mongodb://localhost:27017/westwave", { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("MongoDB connected"))
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 
 // MongoDB Models
 const User = mongoose.model("User", { username: String, email: String, password: String });
 const Story = mongoose.model("Story", { username: String, content: String, timestamp: Date });
 const Message = mongoose.model("Message", { pool: String, username: String, text: String, timestamp: Date });
+const Post = mongoose.model("Post", { username: String, content: String, timestamp: Date });
 
 // Routes
 app.post("/register", async (req, res) => {
@@ -36,13 +36,32 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email, password });
-    if (user) res.status(200).send("Login successful.");
+    if (user) res.status(200).send(user.username);
     else res.status(400).send("Invalid credentials.");
+});
+
+app.post("/story", async (req, res) => {
+    const { username, content } = req.body;
+    const story = new Story({ username, content, timestamp: new Date() });
+    await story.save();
+    res.status(201).send("Story added.");
 });
 
 app.get("/stories", async (req, res) => {
     const stories = await Story.find({ timestamp: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) } });
     res.json(stories);
+});
+
+app.post("/post", async (req, res) => {
+    const { username, content } = req.body;
+    const post = new Post({ username, content, timestamp: new Date() });
+    await post.save();
+    res.status(201).send("Post added.");
+});
+
+app.get("/feed", async (req, res) => {
+    const posts = await Post.find({}).sort({ timestamp: -1 });
+    res.json(posts);
 });
 
 app.get("/messages", async (req, res) => {
