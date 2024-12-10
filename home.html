@@ -3,28 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | WestWave</title>
+    <title>WestWave - Home</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <!-- Navigation -->
+    <div class="navbar">
         <h1>WestWave</h1>
-        <button onclick="logout()">Log Out</button>
-    </header>
-    <main>
-        <section class="posts">
-            <h2>Your Feed</h2>
-            <div id="postContainer">
-                <!-- Posts will be dynamically loaded here -->
+        <div class="nav-links">
+            <a href="#" class="nav-item">Home</a>
+            <a href="#" class="nav-item">Explore</a>
+            <a href="#" class="nav-item">Chats</a>
+            <button id="logoutButton" class="nav-item">Log Out</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Your Groups</h2>
+            <ul class="group-list">
+                <li class="group-item">Book Club</li>
+                <li class="group-item">Gaming Buddies</li>
+                <li class="group-item">Music Lovers</li>
+            </ul>
+        </div>
+
+        <!-- Feed Section -->
+        <div class="feed">
+            <section class="stories">
+                <h2>Stories</h2>
+                <div class="stories-container">
+                    <div class="story">A</div>
+                    <div class="story">B</div>
+                    <div class="story">C</div>
+                </div>
+            </section>
+            <section class="posts">
+                <h2>Feed</h2>
+                <div class="post">
+                    <h3>User 1</h3>
+                    <p>This is a post by User 1.</p>
+                </div>
+                <div class="post">
+                    <h3>User 2</h3>
+                    <p>This is an update by User 2.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat">
+            <h2>Chat</h2>
+            <div class="chat-container">
+                <div class="chat-message"><strong>User1:</strong> Hello!</div>
+                <div class="chat-message"><strong>User2:</strong> Hi there!</div>
             </div>
-        </section>
-        <section class="chat">
-            <h2>Chats</h2>
-            <div id="chatContainer">
-                <!-- Chat features will go here -->
-            </div>
-        </section>
-    </main>
-    <script src="home.js"></script>
+            <input type="text" placeholder="Type a message..." class="chat-input">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 WestWave | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+    </footer>
 </body>
 </html>
