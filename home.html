@@ -3,55 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WestWave - Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>WestWave | Home</title>
 </head>
 <body>
-    <div class="main-page">
-        <!-- Sidebar (Pools) -->
+    <div class="navbar">
+        <h1>WestWave</h1>
+        <button id="logoutButton">Log Out</button>
+    </div>
+    <div class="content">
         <div class="sidebar">
             <h2>Pools</h2>
-            <ul id="poolsList" class="pools-list">
-                <li class="pool-item">General</li>
-                <li class="pool-item">Gaming</li>
-                <li class="pool-item">Music</li>
+            <ul id="pools">
+                <li data-pool="Gaming">Gaming</li>
+                <li data-pool="Movies">Movies</li>
+                <li data-pool="Study Group">Study Group</li>
             </ul>
-            <button id="addPoolButton">+ Add Pool</button>
         </div>
-
-        <!-- Feed Section -->
-        <div class="feed">
-            <section class="stories">
+        <div class="main">
+            <div id="stories">
                 <h2>Stories</h2>
-                <div class="stories-container">
-                    <div class="story">A</div>
-                    <div class="story">B</div>
-                    <div class="story">C</div>
-                </div>
-            </section>
-            <section class="posts">
+                <div id="storyList"></div>
+                <textarea id="storyInput" placeholder="Add your story..."></textarea>
+                <button id="addStory">Post Story</button>
+            </div>
+            <div id="feed">
                 <h2>Feed</h2>
-                <div class="post">
-                    <h3>User 1</h3>
-                    <p>Exploring WestWave!</p>
-                </div>
-                <div class="post">
-                    <h3>User 2</h3>
-                    <p>Welcome to my pool!</p>
-                </div>
-            </section>
+                <div id="postList"></div>
+                <textarea id="postInput" placeholder="Share something..."></textarea>
+                <button id="addPost">Post</button>
+            </div>
         </div>
-
-        <!-- Chat Section -->
         <div class="chat">
             <h2>Chat</h2>
-            <div class="chat-container">
-                <div class="chat-message"><strong>User1:</strong> Hi there!</div>
-                <div class="chat-message"><strong>User2:</strong> Hello!</div>
-            </div>
-            <input type="text" placeholder="Type a message..." class="chat-input">
+            <div id="chatMessages"></div>
+            <input id="chatInput" placeholder="Type a message...">
+            <button id="sendMessage">Send</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="js/home.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </body>
 </html>
