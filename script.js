@@ -1,17 +1,43 @@
-document.getElementById("authForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
+// Form toggle functionality
+document.getElementById("switchToRegister").addEventListener("click", function () {
+    document.getElementById("loginForm").classList.remove("active");
+    document.getElementById("registerForm").classList.add("active");
+});
 
-    if (username && email) {
-        alert(`Welcome, ${username}!`);
+document.getElementById("switchToLogin").addEventListener("click", function () {
+    document.getElementById("registerForm").classList.remove("active");
+    document.getElementById("loginForm").classList.add("active");
+});
+
+// Login and Register functionality
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if (email && password) {
+        alert("Login successful!");
         window.location.href = "home.html";
     } else {
         alert("Please fill out all fields.");
     }
 });
 
-// Chat interaction
+document.getElementById("registerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const username = document.getElementById("registerUsername").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+
+    if (username && email && password) {
+        alert("Registration successful! Please log in.");
+        document.getElementById("switchToLogin").click();
+    } else {
+        alert("Please complete all fields.");
+    }
+});
+
+// Chat functionality
 document.querySelector('.chat-input').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         const message = e.target.value.trim();
@@ -23,5 +49,17 @@ document.querySelector('.chat-input').addEventListener('keypress', function (e) 
             chatContainer.appendChild(newMessage);
             e.target.value = '';
         }
+    }
+});
+
+// Pools functionality
+document.getElementById("addPoolButton").addEventListener("click", function () {
+    const newPool = prompt("Enter the name of the new pool:");
+    if (newPool) {
+        const poolsList = document.getElementById("poolsList");
+        const newPoolItem = document.createElement("li");
+        newPoolItem.className = "pool-item";
+        newPoolItem.textContent = newPool;
+        poolsList.appendChild(newPoolItem);
     }
 });
