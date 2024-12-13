@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WestWave - Home</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/loading.css">
+  <script src="scripts/main.js" defer></script>
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen">
+    <div class="spinner"></div>
+  </div>
+  <header class="app-header">
+    <img src="images/logo.png" alt="WestWave Logo" class="logo">
+    <h1>WestWave</h1>
+  </header>
+  <main class="container">
+    <aside class="menu">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="profile.html">Edit Profile</a></li>
+        <li><a href="#cheer">Cheer</a></li>
+        <!-- Add more pool links here -->
+        <li><a href="#announcement">Announcement</a></li>
+      </ul>
+    </aside>
+    <section class="chat-section">
+      <div id="bereal" class="bereal-section">
+        <h2>BeReal</h2>
+        <p>Upload your moment!</p>
+        <input type="file" id="berealUpload" />
+        <button onclick="uploadBeReal()">Upload</button>
+      </div>
+      <div class="live-chat">
+        <h2>Live Chat</h2>
+        <div id="chatMessages"></div>
+        <input type="text" id="chatInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
